@@ -1,0 +1,34 @@
+function openURL(url){
+  var nsurl = NSURL.URLWithString(url + '?ref=smp');
+  NSWorkspace.sharedWorkspace().openURL(nsurl)
+}
+
+function linkDonate(){
+  openURL('http://utom.design/measure/donate.html');
+}
+
+function linkHelp(){
+  //openURL('http://utom.design/measure/how-to.html');
+   openURL('https://www.kuaiui.cn');
+}
+
+function linkZhCNHelp(){
+  openURL('https://www.kuaiui.cn');
+  //openURL('http://sketch.cm/plugins/1');
+}
+
+function linkFeedback(){
+  openURL('https://www.kuaiui.cn/issues/new');
+}
+
+function linkNiudana(){
+  openURL('http://www.niudana.com');
+}
+
+function linkSketchim(){
+  openURL('http://sketch.im');
+}
+
+function linkHelpCodes(){
+  openURL('http://kuaiui.cn/');
+}
