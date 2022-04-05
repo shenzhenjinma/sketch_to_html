@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<!-- saved from url=(0042)file:///Users/techbin/Desktop/loginreg.htm -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" type="text/css" href="./login_files/dajie.64590.css">
+    <link rel="stylesheet" type="text/css" href="./login_files/login.64590.css">
+    <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+    <script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+
+
+</head>
+
+<body> 
+    <div class="dj-content-wrap " id="dj-content-wrap">
+        <div class="dj-content-inner">
+            <div class="dj-content-shadow">
+
+
+                <div class="loginHtml">
+                    <div class="loginContent">
+                        <div class="loginBox">
+                            <div class="loginTop"> 
+                            </div>
+
+                            <div class="registerBox register">
+                                <div class="loginDialogContent" style="">
+                                    <div class="dialogTitle collar">快ui登录注册
+                                    </div>
+
+                                    <div class="formBox">
+                                        <form id="register_form" novalidate="novalidate" method="POST" action=" ">
+                                            <input type="hidden" name="regSource" value="1">
+                                            <input type="hidden" name="identity" value="1">
+                                            <ul>
+                                                <li class="li_wrap_login">
+                                                    <span class="inputTitle account"></span>
+
+                                                    <input type="text" name="email" id="email" placeholder="请输入邮箱" title="请输入邮箱" class="login_checkinput" autocomplete="off">
+                                                    <em class="iconInput"></em>
+                                                    <span class="errorText"></span>
+                                                </li>
+                                                 <li class="li_wrap_login">
+                                                    <span class="inputTitle account"></span>
+
+                                                    <input type="text" name="phone" id="phone" placeholder="请输入电话" title="请输入电话" class="login_checkinput" autocomplete="off">
+                                                    <em class="iconInput"></em>
+                                                    <span class="errorText"></span>
+                                                </li>
+                                                <li class="li_wrap_login">
+                                                    <span class="inputTitle password"></span>
+                                                    <input type="password" placeholder="设置密码" title="设置密码" id="pass" class="login_checkinput" autocomplete="new-password">
+                                                    <em class="iconInput"></em>
+                                                    <span class="errorText"></span>
+                                                </li>
+                                                    <li class="li_wrap_login">
+                                                    <span class="inputTitle password"></span>
+                                                    <input type="password" placeholder="确认密码" title="确认密码" id="pass2" class="login_checkinput" autocomplete="new-password">
+                                                    <em class="iconInput"></em>
+                                                    <span class="errorText"></span>
+                                                </li>
+                                            </ul>
+      
+                                            <p class="clause li_wrap_login"><i class=""></i><span>我已阅读并同意<a href="https://kuaiui.cn/about" target="_blank">《kuaiui服务条款》</a></span>
+
+                                                <span class="errorText" style="display: none">登录需要同意此条款</span>
+                                            </p>
+                                            <a id="TencentCaptcha" data-appid="2056038059" data-cbfn="callback" class="submitA">立即注册</a>
+                                            <!--  置灰样式 submitA 添加class='noP' 文本显示登录中... -->
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="rightRegister">
+                                    <a href="/login" class="rightRegisterBtn">已有账号，去登录<em></em></a> 
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+<script>
+window.callback = function(res){
+    console.log(res)
+    // res（用户主动关闭验证码）= {ret: 2, ticket: null}
+    // res（验证成功） = {ret: 0, ticket: "String", randstr: "String"}
+    if(res.ret === 0){
+        // alert(res.ticket)   // 票据
+        if($("#pass").val()!=$("#pass2").val() || $("#pass").val()=="" || $("#email").val()==""){
+            alert("用户或密码填写错误");
+            return;
+        }
+        var mail=$("#email").val()
+        var pass=$("#pass").val()
+        var phone=$("#phone").val()
+        $.post("/api/Home/Index/reg",{mail,pass,phone},function(result){
+            alert(result.msg)
+            if(result.code=="0000"){ 
+                window.location.href="/my"
+            }
+        });
+    }
+}
+</script>
+
+
+
+
+</body></html>

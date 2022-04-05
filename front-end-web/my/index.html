@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>管理中心</title> 
+    <script src="//libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+	<link rel="dns-prefetch" href="//cdn1.kuaiui.cn">
+    </head>
+    <style>
+        body{
+            background:#f2f2f2
+        }
+        .addproject{
+            height: 40px; 
+            line-height: 40px;
+            border-radius: 4px;
+            width: 104px;
+            background: #3385ff; 
+            color: white;
+            text-align: center;
+            margin-left: 20px;
+        }
+        .exitbtn{
+            height: 40px; 
+            line-height: 40px;
+            border-radius: 4px;
+            width: 104px;
+            background: #EE1111; 
+            color: white;
+            text-align: center;
+            margin-left: 20px;
+            
+        }
+        .projectitem{
+            height: 330px;  
+            border-color: #ccc;
+            border-radius: 4px;
+            width: 200px;
+            background: #fff;  
+            text-align: center;
+             margin-left: 20px;
+        }
+        .rowprojectview{
+            margin-top:50px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+        .itemmenu{   
+            margin-top: 5px;
+            font-size: 10px;
+        }
+        .itemimg{
+            object-fit: cover;
+            height:270px;
+            width:100%;
+        }
+        .nullproject{
+            font-size:43px;
+            padding-top: 90px;
+            padding-bottom:90px;
+            color: #ccc;
+        }
+    </style>
+    <body>
+        <div>
+            <div class="rowprojectview">
+                <a href="javascript:loginout()" class="exitbtn">退出登录</a>
+                <a href="javascript:addproject()" class="addproject">新建项目</a>
+                <a target="_blank" href="https://v.youku.com/v_show/id_XNDc3NzQ1MzkxMg==.html" class="addproject">使用教程</a>
+            </div>
+            <div id="projectitemview" class="rowprojectview">
+                
+            </div>
+        </div>
+    </body>
+    <script>
+    if (window.location.protocol != "http:"){
+        window.location.href = "http:" + window.location.href.substring(window.location.protocol.length);
+    }
+        function isgologin(result){
+            if(result.code=="0002"){ 
+                loginout(); 
+            }
+        }
+        function loginout(){
+            $.post("/api/User/Index/loginout",function(result){
+                window.location.href="/login?"+new Date().getTime()
+            });
+        }
+        $(document).ready(function (){
+        var projectitemview = document.getElementById('projectitemview'); 
+        $.post("/api/User/Index/getallproject",function(result){
+            console.log("result all project",result)
+           isgologin(result);
+           for(var i=0;i<result.data.length;i++){
+               console.log(result.data[i]);
+               var cdnimgurl="//uploadsketch.kuaiui.cn/Home/Index/imgthumb?imgp=/Uploads";
+               //var cdnimgurl="https://cdn2.kuaiui.cn/";
+               var itemid=result.data[i].id;
+               var filepathurl=result.data[i].filepathurl
+               var boardname=result.data[i].boardname 
+               var tokenstr=btoa(filepathurl+"&n="+boardname);
+               var timg=result.data[i].taskimg;
+               var previewimg = result.data[i].filepathurl?`<img src="${cdnimgurl}${timg}" class="itemimg"/>`:"<h1 class='nullproject'>未上传</h1>";
+               var projectname=result.data[i].name;'itemimg'
+               var div = document.createElement('div'); 
+               var gotobaseurl="//kuaiui.cn/my/project.html?t="+itemid+"&p="+tokenstr;
+               var gotourl = filepathurl?`href="${gotobaseurl}"`:"";
+            
+            div.innerHTML = `<div id='projectitem' class='projectitem'>
+                    <a target="_blank" ${gotourl} >
+                        ${previewimg}
+                        <div class="itename">${projectname}</div>
+                    </a>
+                    <div class="itemmenu"> 
+                         <a href="javascript:editproject('${itemid}','${projectname}')">修改</a>
+                         <a href="javascript:copyurl('${gotobaseurl}')">复制链接到剪切板</a>
+                    </div>
+                </div>`
+            projectitemview.appendChild(div);   
+           }
+        });
+        
+        
+        
+        
+        
+        
+        
+        });
+
+        function copyurl(text) {
+            var textareaEl = document.createElement('textarea');
+            textareaEl.setAttribute('readonly', 'readonly'); // 防止手机上弹出软键盘
+            textareaEl.value = text;
+            document.body.appendChild(textareaEl);
+            textareaEl.select();
+            var res = document.execCommand('copy');
+            document.body.removeChild(textareaEl);
+            alert("已将连接复制到剪切板"); 
+        }
+        function editproject(projectid,projectname){
+            var projectname= window.prompt("修改的项目名称",projectname); 
+            var name = projectname.trim();
+            if(name==""){
+                alert("项目名称不能为空");
+                return;
+            }
+            $.post("/api/User/Index/editproject",{projectid,name},function(result){
+                isgologin(result);
+                alert(result.msg)
+                location.reload();
+            });   
+        }
+        
+        
+        function addproject(projectname){
+            var projectname= window.prompt("添加的项目名称",projectname); 
+            var name = projectname.trim();
+            if(name==""){
+                alert("项目名称不能为空");
+                return;
+            }
+            $.post("/api/User/Index/addproject",{name},function(result){
+                isgologin(result);
+                alert(result.msg)
+                location.reload();
+            });   
+        }
+        
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?0a4c240fffd639bffb81314c87e9a7d1";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+        
+    </script>
+</html>

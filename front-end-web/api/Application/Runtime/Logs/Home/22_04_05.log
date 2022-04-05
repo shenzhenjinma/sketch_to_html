@@ -1,0 +1,14 @@
+[ 2022-04-05T15:54:42+08:00 ] 119.129.97.162 /api/Home/Index/getnewboard?taskid=906
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000010s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000263s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000338s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000372s ]
+NOTIC: [8] A session had already been started - ignoring session_start() /www/wwwroot/kuaiui.cn/api/Application/Home/Controller/IndexController.class.php 第 10 行.
+SQL: SHOW COLUMNS FROM `project` [ RunTime:0.0006s ]
+SQL: SELECT * FROM `project` WHERE `id` = 906  [ RunTime:0.0003s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000363s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000388s ]
+
